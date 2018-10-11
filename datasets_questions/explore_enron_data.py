@@ -19,4 +19,9 @@ import pickle
 
 enron_data = pickle.load(open("../final_project/final_project_dataset.pkl", "r"))
 
+# print(len(enron_data['METTS MARK']))
+# print(str(enron_data).count("True"))
+# print(len(enron_data))
 
+print len(dict((key, value) for key, value in enron_data.items() if value['salary'] != 'NaN'))
+print len(dict((key, value) for key, value in enron_data.items() if value['email_address'] != 'NaN'))
