@@ -48,18 +48,40 @@ features_list = [poi, feature_1, feature_2, feature_3]
 data = featureFormat(data_dict, features_list)
 poi, finance_features = targetFeatureSplit(data)
 
-temp_list = []
+temp_list_sal = []
+temp_list_exstock = []
 for key, value in data_dict.items():
-    temp_list.append(data_dict[key][feature_1])
+    if data_dict[key][feature_1] == "NaN" or data_dict[key][feature_2] == "NaN":
+        continue
+    temp_list_sal.append(data_dict[key][feature_1])
+    temp_list_exstock.append(data_dict[key][feature_2])
 
-print sorted(temp_list)
+# temp_list_exstock.remove("NaN")
+# temp_list_sal.remove("NaN")  # remove("NaN")
+print temp_list_sal, "\n\n", temp_list_exstock
+
+from sklearn import preprocessing
+narray_sal = numpy.array([[float(min(temp_list_sal))], [200000.], [float(max(temp_list_sal))]])
+output = preprocessing.minmax_scale(narray_sal)
+print output
+
+narray_exstock = numpy.array([[float(min(temp_list_exstock))], [1000000.], [float(max(temp_list_exstock))]])
+output = preprocessing.minmax_scale(narray_exstock)
+print output
+
 
 from sklearn.cluster import KMeans
+
 
 kmeans = KMeans(n_clusters=2)
 kmeans.fit(finance_features)
 pred = kmeans.predict(finance_features)
 
+# narray = numpy.array([[ 200000.],[1000000.]])
+# output = preprocessing.minmax_scale(narray,data)
+# print output
+
+# output = preprocessing.minmax_scale([[]])
 ### in the "clustering with 3 features" part of the mini-project,
 ### you'll want to change this line to 
 ### for f1, f2, _ in finance_features:
